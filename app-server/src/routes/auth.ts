@@ -17,9 +17,11 @@ router.post('/', async (req: Request<{}, {}, BodyType>, res) => {
 
     const uniqueId = await signInOrCreateUser(idToken);
     return res.status(200).json({ uniqueId });
-  } catch {
-    return res.status(500).json({ error: 'Could not complete the request.' });
-  }
+  } catch (error) {
+    console.error(error); 
+
+    const errorMessage = error instanceof Error ? error.message : 'Could not complete the request.';
+    return res.status(500).json({ error: errorMessage });  }
 });
 
 export const AuthRouter = router;
