@@ -14,5 +14,9 @@
     "eslint": "^8.57.0",
     "typescript": "^5.4.3",
     "typescript-eslint": "^7.5.0"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "google-auth-library": "^9.7.0"
   }
 }

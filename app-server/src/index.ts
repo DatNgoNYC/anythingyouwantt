@@ -1,17 +1,15 @@
-// main app
 import express from 'express';
-import http from 'http';
-
-// import the routers here
-// import authRoute from ./routes/authRoute
-// import //
+import { AuthRouter } from './routes/auth';
 
 const app = express();
-
 const PORT = process.env.PORT;
 
+// middleware
 app.use(express.json());
-// app.use('/api, apiRoutes)
-// app.use('/auth, authRoute)
 
+// Role of Router: Handle HTTP-specific details (e.g., parsing the request, setting response codes and headers).
+app.use('/auth', AuthRouter)
+// app.use('/api, apiRoutes)
+
+//start program.
 app.listen(PORT, () => console.log(`running app server listening on port ${PORT}`));
