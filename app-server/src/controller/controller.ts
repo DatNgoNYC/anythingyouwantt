@@ -3,7 +3,7 @@ import verifyToken, { OAuthPayload } from "./services/googleAuth";
 
 export async function signInOrCreateUser(
   idToken: string
-): Promise<{ uniqueId: string }> {
+): Promise<string> {
   const userInfo : OAuthPayload = await verifyToken(idToken);
   const userId = await createUser(userInfo)
   
