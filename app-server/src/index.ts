@@ -1,6 +1,6 @@
 import express from 'express';
 import { AuthRouter } from './routes/auth';
-import initializeDatabase from './database/schema';
+import { initializeDatabase } from './database/db';
 
 const app = express();
 const PORT = process.env.PORT;
