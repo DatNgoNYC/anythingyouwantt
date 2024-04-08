@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useState } from "react";
+import { ReactNode, createContext, useState } from 'react';
 
 type AuthContextType = {
   userId: string | null;
@@ -6,21 +6,23 @@ type AuthContextType = {
 };
 
 type AuthProviderProps = {
-  children: ReactNode
+  children: ReactNode;
+};
 
-}
-
-const defaultAuthContextState: AuthContextType = { userId: null, setUserId: () => {}}
-const AuthContext = createContext<AuthContextType>(defaultAuthContextState)
+const defaultAuthContextState: AuthContextType = {
+  userId: null,
+  setUserId: () => {},
+};
+const AuthContext = createContext<AuthContextType>(defaultAuthContextState);
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
   const [userId, setUserId] = useState(localStorage.getItem('uniqueId'));
 
-  return(
+  return (
     <AuthContext.Provider value={{ userId, setUserId }}>
-    {children}
-  </AuthContext.Provider>
-  )
-}
+      {children}
+    </AuthContext.Provider>
+  );
+};
 
-export default AuthProvider
+export default AuthProvider;
