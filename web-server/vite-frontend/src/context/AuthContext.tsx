@@ -13,9 +13,9 @@ const defaultAuthContextState: AuthContextType = {
   userId: null,
   setUserId: () => {},
 };
-const AuthContext = createContext<AuthContextType>(defaultAuthContextState);
+export const AuthContext = createContext<AuthContextType>(defaultAuthContextState);
 
-const AuthProvider = ({ children }: AuthProviderProps) => {
+export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [userId, setUserId] = useState(localStorage.getItem('uniqueId'));
 
   return (
@@ -24,5 +24,3 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     </AuthContext.Provider>
   );
 };
-
-export default AuthProvider;
