@@ -1,50 +1,57 @@
-import { RefObject, useContext, useEffect, useRef } from 'react';
+import { ReactNode, RefObject, useContext, useEffect, useRef } from 'react';
 import { AuthContext } from '../../../context/AuthContext';
+import { CredentialResponse } from '../../../types';
+import styles from './GoogleSignInButton.module.css'
 
-function GoogleSignInButton() {
+const GoogleSignInButton = (): ReactNode => {
+  const { userId } = useContext(AuthContext);
   const buttonDivRef = useRef<HTMLDivElement>(null);
-  useGoogleSignInHook(buttonDivRef);
+  useExternalGoogleScript(buttonDivRef);
 
-  return <div ref={buttonDivRef} />;
-}
+  return <div ref={buttonDivRef} className={userId ? `${styles.hidden}` : ``} />;
+};
 
-// we have to use this custom hook (the useEffect) because the google library only accepts HtmlElements and not React nodes in the renderButton() method. It will also serve to load the required script. It is only accessible through url download, no node package.
-const useGoogleSignInHook = (containerRef: RefObject<HTMLElement>) => {
-  const { setUserId } = useContext(AuthContext)
+// This custom hook loads the google identity library which only accepts HtmlElements and not React nodes in its renderButton() method. That is why we have to pass it a 'ref' of the div It will also serve to load the required script. It is only accessible through clieant script download, no node package.
+const useExternalGoogleScript = (containerRef: RefObject<HTMLElement>) => {
+  const { setUserId } = useContext(AuthContext);
+
   useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://accounts.google.com/gsi/client';
-    script.async = true;
-    script.onload = () => {
-      window.google.accounts.id.initialize({
-        client_id:
-          '298422396148-geun3f7crbkltsuvuv0iene4gbrjmeub.apps.googleusercontent.com',
-        callback: handleCredentialResponse,
-      });
+    const scriptId = 'google-identity-services';
+    let script = document.getElementById(scriptId) as HTMLScriptElement | null;
 
-      window.google.accounts.id.renderButton(containerRef.current, {
-        theme: 'filled_black',
-        size: 'medium',
-        type: 'standard',
-        shape: 'rectangular',
-        text: 'continue_with',
-      });
-    };
+    if (!script) {
+      script = document.createElement('script');
+      script.id = scriptId;
+      script.src = 'https://accounts.google.com/gsi/client';
+      script.async = true;
+      script.onload = () => {
+        window.google.accounts.id.initialize({
+          client_id:
+            '298422396148-geun3f7crbkltsuvuv0iene4gbrjmeub.apps.googleusercontent.com',
+          callback: handleCredentialResponse,
+        });
 
-    document.body.append(script);
+        window.google.accounts.id.renderButton(containerRef.current, {
+          theme: 'filled_black',
+          size: 'medium',
+          width: '200',
+          type: 'standard',
+          shape: 'rectangular',
+          text: 'continue_with',
+        });
+      };
+
+      document.body.append(script);
+
+    }
+
+    // Callback will make an authorization request to our backend and set the authorization state of the app upon success.
+    function handleCredentialResponse(credentialResponse: CredentialResponse) {
+      console.log(`the response from google: ${credentialResponse.credential}`);
+      setUserId('1');
+      return;
+    }
   });
-
-  // we know that the response parameter will be a 'CredentialResponse' according to the docs.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function handleCredentialResponse(credentialResponse: CredentialResponse) {
-    console.log(`the response from google: ${credentialResponse.credential}`);
-    setUserId("1")
-    return;
-  }
-}
+};
 
 export { GoogleSignInButton };
-
-type CredentialResponse = {
-  credential: string;
-};

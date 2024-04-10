@@ -1,7 +1,7 @@
 import Home from './pages/home/Home';
-import Dashboard from './pages/dashboard/Dashboard';
 import { AuthProvider } from './context/AuthContext';
 import DashboardProvider from './context/DashboardContext';
+import { Dashboard } from './pages/dashboard/Dashboard';
 
 function App() {
   return (

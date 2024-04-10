@@ -13,7 +13,7 @@ const defaultDashboardContextState: DashboardContextType = {
   isDashboardActive: false,
   setIsDashboardActive: () => {},
 };
-const DashboardContext = createContext<DashboardContextType>(
+export const DashboardContext = createContext<DashboardContextType>(
   defaultDashboardContextState
 );
 
