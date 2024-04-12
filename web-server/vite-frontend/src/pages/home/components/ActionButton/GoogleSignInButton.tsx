@@ -1,17 +1,22 @@
 import { ReactNode, RefObject, useContext, useEffect, useRef } from 'react';
-import { AuthContext } from '../../../context/AuthContext';
-import { CredentialResponse } from '../../../types';
+import { AuthContext } from '../../../../context/AuthContext';
+import { CredentialResponse } from '../../../../types';
 import styles from './GoogleSignInButton.module.css'
 
-const GoogleSignInButton = (): ReactNode => {
-  const { userId } = useContext(AuthContext);
+export { GoogleSignInButton };
+
+type GoogleSignInProps = {
+  isVisible: boolean
+}
+
+const GoogleSignInButton = ({isVisible} : GoogleSignInProps): ReactNode => {
   const buttonDivRef = useRef<HTMLDivElement>(null);
   useExternalGoogleScript(buttonDivRef);
 
-  return <div ref={buttonDivRef} className={userId ? `${styles.hidden}` : ``} />;
+  return <div ref={buttonDivRef} className={`${styles.googleSignInButton} ${isVisible ? `` : styles.hidden}`} />;
 };
 
-// This custom hook loads the google identity library which only accepts HtmlElements and not React nodes in its renderButton() method. That is why we have to pass it a 'ref' of the div It will also serve to load the required script. It is only accessible through clieant script download, no node package.
+// This custom hook loads the google identity library which only accepts HtmlElements and not ReactNodes in its renderButton() method. That is why we have to pass it a 'ref' of the div. It will also serve to load the required script instead of attaching it to index.html. It is only accessible through client side scripting, no node package.
 const useExternalGoogleScript = (containerRef: RefObject<HTMLElement>) => {
   const { setUserId } = useContext(AuthContext);
 
@@ -53,5 +58,3 @@ const useExternalGoogleScript = (containerRef: RefObject<HTMLElement>) => {
     }
   });
 };
-
-export { GoogleSignInButton };

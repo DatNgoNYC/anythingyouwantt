@@ -1,25 +1,34 @@
 // the Login Button and dashboard button will be conditionally rendered depending on whether the user is logged in.
 
-import { ReactNode } from 'react';
+import { useContext } from 'react';
 
-import { Logo } from './Logo';
-import { Searchbar } from './Searchbar';
-import { OpenDashboardButton } from './ActionButton/OpenDashboardButton';
-import { GoogleSignInButton } from './ActionButton/GoogleSignInButton';
+import { Logo } from './components/Logo';
+import { Searchbar } from './components/Searchbar';
+import { OpenDashboardButton } from './components/ActionButton/OpenDashboardButton';
+import { GoogleSignInButton } from './components/ActionButton/GoogleSignInButton';
+import { AuthContext } from '../../context/AuthContext';
+import styles from './style/Home.module.css'
 
 const Home = () => {
-  const AuthButtonContainer: ReactNode = (
-    <div>
-      <GoogleSignInButton />
-      <OpenDashboardButton />
-    </div>
-  );
-
   return (
-    <div>
-      {AuthButtonContainer}
+    <div className={`${styles.home}`}>
+      <AuthButtonContainer />
       <Logo />
       <Searchbar />
+    </div>
+  );
+};
+
+const AuthButtonContainer = (): React.JSX.Element => {
+  const { userId } = useContext(AuthContext);
+
+  const googleVisible = !userId; 
+  const dashboardVisible = !!userId;  
+
+  return (
+    <div className={styles.authButtonContainer}>
+      <GoogleSignInButton isVisible={googleVisible} />
+      <OpenDashboardButton isVisible={dashboardVisible} />
     </div>
   );
 };

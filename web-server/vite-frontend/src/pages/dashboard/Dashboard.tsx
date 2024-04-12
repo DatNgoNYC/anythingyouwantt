@@ -1,36 +1,43 @@
-import { ReactNode, useContext } from 'react';
-import { AuthContext } from '../../context/AuthContext';
+import { useContext, useState } from 'react';
+import { SidePanel } from './components/SidePanel';
+import { You } from './components/You';
+import { PageProps } from '../../types';
+import { Orders } from './components/Orders';
 import { DashboardContext } from '../../context/DashboardContext';
-import styles from './Dashboard.module.css';
+import styles from './style/Dashboard.module.css';
 
-const Dashboard = (): ReactNode => {
+const Dashboard = () => {
   const { isDashboardActive } = useContext(DashboardContext);
+  const [currentPage, setCurrentPage] = useState('you');
 
   return (
     <div
-      className={`${styles.dashboard} ${
-        isDashboardActive ? styles.active : ''
-      }`}
+      className={`
+    ${styles.dashboard} 
+    ${isDashboardActive ? styles.active : ''}`}
+
     >
-      <SignOutButton />
+      <SidePanel currentPage={currentPage} setCurrentPage={setCurrentPage} />
+      <Page currentPage={currentPage} />
     </div>
   );
+};
+
+const Page = ({ currentPage }: PageProps): React.JSX.Element => {
+  const renderCurrentPage = (currentPage: string): React.JSX.Element => {
+    switch (currentPage) {
+      case 'you':
+        return <You />;
+
+      case 'orders':
+        return <Orders />;
+
+      default:
+        return <You />;
+    }
+  };
+
+  return <div className={`${styles.page}`}>{renderCurrentPage(currentPage)}</div>;
 };
 
 export { Dashboard };
-
-const SignOutButton = () => {
-  const { setUserId } = useContext(AuthContext);
-  const { setIsDashboardActive } = useContext(DashboardContext);
-
-  return (
-    <div
-      onClick={() => {
-        setIsDashboardActive(false);
-        setUserId(null);
-      }}
-    >
-      Sign Out
-    </div>
-  );
-};

@@ -1,12 +1,12 @@
-import Home from './pages/home/Home';
+import Home from './pages/Home/Home';
 import { AuthProvider } from './context/AuthContext';
 import DashboardProvider from './context/DashboardContext';
-import { Dashboard } from './pages/dashboard/Dashboard';
+import { Dashboard } from './pages/Dashboard/Dashboard';
 
 function App() {
   return (
-    <AuthProvider> // provides the unqieueId of the user, null if no one is signed in.
-      <DashboardProvider> // COME BACK TO THIS
+    <AuthProvider>
+      <DashboardProvider> 
         <Home />
         <Dashboard />
       </DashboardProvider>
