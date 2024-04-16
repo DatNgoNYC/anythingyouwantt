@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express'
 import { getThingsByUserId } from '../controller/controller'
-import { error } from 'console'
+import { gerror } from 'console'
 import { createThing } from '../database/model/Thing'
 
 const router = Router()
