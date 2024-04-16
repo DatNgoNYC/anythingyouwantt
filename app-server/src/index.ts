@@ -1,6 +1,7 @@
 import express from 'express';
 import { AuthRouter } from './routes/auth';
 import { initializeDatabase } from './database/db';
+import { ApiRouter } from './routes/api';
 
 const app = express();
 const PORT = process.env.PORT;
@@ -9,7 +10,7 @@ const PORT = process.env.PORT;
 app.use(express.json());
 
 app.use('/auth', AuthRouter)
-// app.use('/api, apiRoutes)
+app.use('/api', ApiRouter)
 
 // start program.
 initializeDatabase();
