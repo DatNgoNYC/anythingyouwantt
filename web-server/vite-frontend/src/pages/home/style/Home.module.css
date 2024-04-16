@@ -1,0 +1,48 @@
+/* Design */
+
+.home {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.authButtonContainer {
+  position: relative;
+  top: 20px;
+  left: 20px;
+
+  display: inline-block;
+}
+
+.googleSignInButton,
+.openDashboardButton {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  display: inline-block;
+}
+
+.searchBar {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  display: inline-block;
+}
+
+/* Pseudo-state classes */
+
+.hidden {
+  visibility: hidden;
+}
