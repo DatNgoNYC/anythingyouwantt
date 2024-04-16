@@ -8,31 +8,20 @@ type BodyType = {
 }
 
 router.post('/', async (req: Request<{}, {}, BodyType>, res) => {
-  const { idToken } = req.body
-
-  if (!idToken) {
-    return res.status(400).json({ error: 'idToken is required.' })
-  }
-
   try {
-    const uniqueId = await signInOrCreateUser(idToken)
+    const { idToken } = req.body
 
+    if (!idToken) {
+      return res.status(400).json({ error: 'idToken is required.' })
+    }
+
+    const uniqueId = await signInOrCreateUser(idToken)
     return res.status(200).json({ uniqueId })
   } catch (error) {
-    if (error instanceof Error) {
-      console.error(error.message)
+    console.error(error)
 
-      return res.status(500).json({
-        error:
-          'Could not complete the authentication request: ' + error.message,
-      })
-    } else {
-      console.error('Non-standard error object:', error)
-
-      return res.status(500).json({
-        error: 'Unknown error occurred during authentication.',
-      })
-    }
+    const errorMessage = error instanceof Error ? error.message : 'Could not complete the authentication request.'
+    return res.status(500).json({ error: errorMessage })
   }
 })
 
