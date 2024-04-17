@@ -9,7 +9,7 @@ export type OAuthPayload = {
   picture: string
 }
 
-async function verifyToken(idToken: string) : Promise<OAuthPayload> {
+async function verifyGoogleToken(idToken: string) : Promise<OAuthPayload> {
   const ticket = await client.verifyIdToken({
     idToken: idToken,
     audience: process.env.GOOGLE_OAUTH_CLIENT_ID
@@ -33,4 +33,6 @@ async function verifyToken(idToken: string) : Promise<OAuthPayload> {
   }
 }
 
-export default verifyToken;
+export const Services = {
+  verifyGoogleToken
+};

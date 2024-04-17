@@ -1,20 +1,29 @@
-import pgPromise from 'pg-promise';
-import { createUserTable } from './model/User';
+import pgPromise from 'pg-promise'
+import { createUserTable, deleteUser } from './model/User'
+import { getAllOrders, createOrder } from './model/Orders'
 
-const port = process.env.RDS_PORT ? parseInt(process.env.RDS_PORT, 10) : 5432;
 
-const dbConfig = {
-  user: process.env.RDS_USERNAME,
-  host: process.env.RDS_HOSTNAME,
-  database: process.env.RDS_DB_NAME,
-  password: process.env.RDS_PASSWORD,
-  port: port,
-};
+const dbUrl = process.env.DATABASE_URL as string;
+export const db = pgPromise()(dbUrl);
 
-const db = pgPromise()(dbConfig);
 
-export function initializeDatabase() {
-  createUserTable();
+
+async function initializeDatabase() {
+  try {
+    createUserTable()
+  } catch (error) {
+    throw Error
+  }
 }
 
-export default db;
+import { getUser, createUser } from './model/User'
+
+export const Database = {
+  initializeDatabase,
+  db,
+  getUser,
+  createUser,
+  deleteUser,
+  getAllOrders,
+  createOrder
+}

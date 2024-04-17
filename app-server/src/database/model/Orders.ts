@@ -1,15 +1,15 @@
-import db from '../db'
+import { db } from "../db"
 
-export type Thing = {
+export type Order = {
   id: number
   title: string
   date: Date
   userId: string
 }
 
-export async function createThingTable(): Promise<any> {
+export async function createOrderTable(): Promise<void> {
   return db.query(`
-    CREATE TABLE IF NOT EXISTS "Thing" (
+    CREATE TABLE IF NOT EXISTS "Order" (
       "id" SERIAL PRIMARY KEY
       "title" VARCHAR(255) NOT NULL,
       "date" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -18,11 +18,11 @@ export async function createThingTable(): Promise<any> {
   `)
 }
 
-export async function createThing(userId: string, title: string) {
+export async function createOrder(userId: string, title: string) {
   return db.tx(async (t) => {
     await t.none(
       `
-      INSERT INTO "Thing" ("title", "userId")
+      INSERT INTO "Order" ("title", "userId")
       VALUES ($1, $2)
       `,
       [title, userId]
@@ -30,11 +30,11 @@ export async function createThing(userId: string, title: string) {
   })
 }
 
-export async function getAllThings(userId: string) {
+export async function getAllOrders(userId: string) {
   return db.query(
     `
     SELECT "id", "title", "date"
-    FROM "Thing"
+    FROM "Order"
     WHERE "userId" = $1
     ORDER BY "date" DESC
     `,
