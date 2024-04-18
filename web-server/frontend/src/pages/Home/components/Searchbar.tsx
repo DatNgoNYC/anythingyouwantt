@@ -1,8 +1,8 @@
 import { ReactNode, useContext, useState } from 'react'
-import styles from '../style/Home.module.css'
+import styles from '../Home.module.scss'
 import { AuthContext } from '../../../context/AuthContext'
 
-const Searchbar = (): ReactNode => {
+export const Searchbar = (): ReactNode => {
   const { userId } = useContext(AuthContext)
   // const [isProcessingRequest, setIsProcessingRequest] = useState(false);
   const [title, setTitle] = useState('')
@@ -21,8 +21,6 @@ const Searchbar = (): ReactNode => {
     )
   }
 }
-
-export { Searchbar }
 
 async function sendRequest(userId: string, title: string) {
   const endpoint = '/api/user/things'
