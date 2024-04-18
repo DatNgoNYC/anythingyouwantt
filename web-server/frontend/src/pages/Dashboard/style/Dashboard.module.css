@@ -1,0 +1,28 @@
+.dashboard {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: -100%;
+  background: white;
+  transition: transform 0.5s ease-in-out;
+}
+
+.sidePanel {
+
+}
+
+.page {
+
+}
+
+/* Pseudo-state styling */
+
+.highlighted {
+  background-color: gray
+}
+
+
+.active {
+  transform: translateX(100%);
+}
