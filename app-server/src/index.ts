@@ -9,7 +9,7 @@ const PORT = process.env.PORT
 // middleware
 app.use(express.json())
 
-// routes 
+// routes
 app.use('/auth', AuthRouter) // authorize use of our app
 app.use('/api', ApiRouter) // access the api
 
@@ -19,6 +19,6 @@ app.listen(PORT, async () => {
     await Database.initializeDatabase()
     console.log(`running app server listening on port ${PORT}`)
   } catch (error) {
-    console.error("Could not start the app.")
+    console.error('Could not start the app.')
   }
 })
