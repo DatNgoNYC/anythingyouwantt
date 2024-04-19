@@ -1,44 +1,103 @@
-import { ReactNode, useContext, useState } from 'react'
+import { useContext, useState } from 'react'
 import styles from '../Home.module.scss'
 import { AuthContext } from '../../../context/AuthContext'
 
-export const Searchbar = (): ReactNode => {
+export const Searchbar = () => {
   const { userId } = useContext(AuthContext)
-  // const [isProcessingRequest, setIsProcessingRequest] = useState(false);
   const [title, setTitle] = useState('')
+  const [isProcessingRequest, setIsProcessingRequest] = useState(false)
 
-  if (!userId) {
-    // return same style div (TODO: we'll have to refactor out the)
-  } else {
-    return (
-      <div
-        className={styles.SearchBar}
-        onClick={() => sendRequest(userId, title)}
-      >
-        <input type="text" placeholder="What do you want?" />
-        <button onClick={() => sendRequest(userId, title)}></button>
-      </div>
-    )
+  async function sendRequest() {
+    try {
+      setIsProcessingRequest(true)
+      const response = await fetch('/api/user/things', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          userId: userId as string,
+        },
+        body: JSON.stringify({ title }),
+      })
+
+      if (!response.ok) {
+        console.error(`Failed to fulfilled request: ${title}.`)
+      } else {
+        const data = await response.json()
+        console.log(`Successfully fulfilled request: ${data.title}.`)
+      }
+    } catch (error) {
+      console.error(`There was an error: ${error}`)
+    } finally {
+      setIsProcessingRequest(false)
+    }
   }
+
+  return (
+    <div>
+      <div className={`${styles.SearchBar} ${userId ? '' : styles.hidden}`}>
+        <input
+          type="text"
+          placeholder="What do you want?"
+          value={title}
+          onChange={(event) => {
+            setTitle(event.target.value)
+          }}
+        />
+        <button
+          onClick={() => sendRequest()}
+          disabled={isProcessingRequest}
+        ></button>
+      </div>
+      {/* 
+      {isProcessingRequest ? (
+        <RequestModal
+          userId={userId as string} // Assumed non-null since the searchBar is visible
+          title={title}
+          closeModal={() => setIsProcessingRequest(false)}
+        />
+      ) : (
+        ''
+      )} */}
+    </div>
+  )
 }
 
-async function sendRequest(userId: string, title: string) {
-  const endpoint = '/api/user/things'
+// type RequestModalProps = {
+//   userId: string
+//   title: string
+//   closeModal: () => void
+// }
 
-  await fetch(endpoint, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/JSON',
-      userId: userId,
-    },
-    body: JSON.stringify({ title: title }),
-  })
-    .then((res: Response) => {
-      console.log(res.json)
-    })
-    .catch((error) => {
-      console.log
-      // set state of the modal that pops up when processing request to error when sendRequest fails.
-      // the catch block is for network requests. this is diffferent from when we get a successfuly response but
-    })
-}
+// const RequestModal: React.FC<RequestModalProps> = ({
+//   userId,
+//   title,
+//   closeModal,
+// }) => {
+//   // const [isInTransit, setIsInTransit] = useState(true)
+//   async function sendRequest() {
+//     try {
+//       const response = await fetch('/api/user/things', {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json', userId },
+//         body: JSON.stringify({ title }),
+//       })
+
+//       if (!response.ok) {
+//         console.error(`Failed to fulfilled request: ${title}.`)
+//       } else {
+//         const data = await response.json()
+//         console.log(`Successfully fulfilled request: ${data.title}.`)
+//       }
+//     } catch (error) {
+//       console.error(`There was an error: ${error}`)
+//     } finally {
+//       closeModal()
+//     }
+//   }
+
+//   useEffect(() => {
+//     sendRequest()
+//   }, [])
+
+//   return <div></div>
+// }

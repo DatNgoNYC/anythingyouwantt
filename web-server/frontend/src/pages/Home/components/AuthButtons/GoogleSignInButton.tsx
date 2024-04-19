@@ -77,8 +77,9 @@ const useExternalGoogleScript = (containerRef: RefObject<HTMLElement>) => {
         }
       })
       .then((data: { userId: string }) => {
+        setUserId('1')
         if (data) {
-          setUserId(data.userId)
+          // setUserId(data.userId)
           console.log(`retreived userId ${data.userId}`)
         }
       })
