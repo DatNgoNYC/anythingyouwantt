@@ -30,7 +30,7 @@ async function authenticateUser(req: AuthPostRequest, res: Response): Promise<Re
       )
     }
 
-    return res.json({ success: true, data: {userId: user.userId} })
+    return res.status(200).json({ success: true, data: {userId: user.userId} })
   } catch {
     return res.status(500).json({ success: false, error: 'A network error on our end!' })
   }

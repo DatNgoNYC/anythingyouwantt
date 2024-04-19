@@ -18,7 +18,7 @@ const GoogleSignInButton: React.FC<GoogleSignInButtonProps> = ({
   return (
     <div
       ref={buttonDivRef}
-      className={`${styles.googleSignInButton} ${isVisible ? `` : styles.hidden}`}
+      className={`${styles.GoogleSignInButton} ${isVisible ? `` : styles.hidden}`}
     />
   )
 }
@@ -55,12 +55,35 @@ const useExternalGoogleScript = (containerRef: RefObject<HTMLElement>) => {
 
       document.body.append(script)
     }
-
-    // Callback will make an authorization request to our backend and set the authorization state of the app upon success.
-    function handleCredentialResponse(credentialResponse: CredentialResponse) {
-      console.log(`the response from google: ${credentialResponse.credential}`)
-      setUserId('1')
-      return
-    }
   })
+
+  function handleCredentialResponse(credentialResponse: CredentialResponse) {
+    console.log(`the response from google: ${credentialResponse}`)
+
+    fetch('/auth', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        idToken: credentialResponse.credential,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          console.error('Response was not successful.')
+        } else {
+          return response.json()
+        }
+      })
+      .then((data: { userId: string }) => {
+        if (data) {
+          setUserId(data.userId)
+          console.log(`retreived userId ${data.userId}`)
+        }
+      })
+      .catch((error) => {
+        console.error(`Error fetching data: ${error}`)
+      })
+  }
 }

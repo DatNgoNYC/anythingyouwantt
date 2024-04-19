@@ -1,8 +1,4 @@
-// the Login Button and dashboard button will be conditionally rendered depending on whether the user is logged in.
-
 import { useContext } from 'react'
-
-import { Logo } from './components/Logo'
 import { Searchbar } from './components/Searchbar'
 import { AuthContext } from '../../context/AuthContext'
 import { GoogleSignInButton } from './components/AuthButtons/GoogleSignInButton'
@@ -11,7 +7,7 @@ import styles from './Home.module.scss'
 
 const Home: React.FC = () => {
   return (
-    <div className={`${styles.home}`}>
+    <div className={`${styles.Home}`}>
       <AuthButtonContainer />
       <Logo />
       <Searchbar />
@@ -26,11 +22,15 @@ const AuthButtonContainer = () => {
   const dashboardVisible = !!userId
 
   return (
-    <div className={styles.authButtonContainer}>
+    <div className={styles.AuthButtonContainer}>
       <GoogleSignInButton isVisible={googleVisible} />
       <OpenDashboardButton isVisible={dashboardVisible} />
     </div>
   )
+}
+
+const Logo = () => {
+  return <div className={styles.Logo}>Logo</div>
 }
 
 export default Home

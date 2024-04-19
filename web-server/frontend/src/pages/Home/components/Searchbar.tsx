@@ -12,7 +12,7 @@ export const Searchbar = (): ReactNode => {
   } else {
     return (
       <div
-        className={styles.searchBar}
+        className={styles.SearchBar}
         onClick={() => sendRequest(userId, title)}
       >
         <input type="text" placeholder="What do you want?" />

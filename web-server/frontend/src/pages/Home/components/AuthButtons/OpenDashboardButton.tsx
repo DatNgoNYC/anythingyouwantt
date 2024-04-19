@@ -12,14 +12,14 @@ const OpenDashboardButton: React.FC<OpenDashboardButtonProp> = ({
   const { setIsDashboardActive } = useContext(DashboardContext)
 
   return (
-    <div
+    <button
       onClick={() => {
         setIsDashboardActive(true)
       }}
-      className={`${styles.openDashboardButton} ${isVisible ? '' : styles.hidden}`}
+      className={`${styles.OpenDashboardButton} ${isVisible ? '' : styles.hidden}`}
     >
       Open Dashboard
-    </div>
+    </button>
   )
 }
 

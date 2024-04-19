@@ -1,13 +1,13 @@
 /* Design */
 
-.home {
+.Home {
   width: 100vw;
   height: 100vh;
   position: absolute;
   top: 0;
   left: 0;
 
-  .authContainer {
+  .AuthButtonContainer {
     position: absolute; // Absolute positioning within a relative parent
     top: 5%;
     left: 5%;
@@ -15,34 +15,36 @@
     height: auto; // Auto height to adjust based on content
 
     /* Overlapping button positioning using visibility for conditional rendering */
-    .button {
+    .GoogleSignInButton {
       position: absolute; // Position buttons absolutely within their container
       top: 0;
       left: 0;
-      visibility: hidden; // Default to hidden
     }
 
-    /* Specific class to make a button visible */
-    .buttonVisible {
-      visibility: visible;
+    .OpenDashboardButton {
+      position: absolute; // Position buttons absolutely within their container
+      top: 0;
+      left: 0;
     }
   }
 
-  .logo {
+  .Logo {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-
-    display: inline-block;
   }
 
-  .searchBar {
+  .SearchBar {
     position: absolute;
     top: 60%;
     left: 50%;
     transform: translate(-50%, -50%);
-
-    display: inline-block;
   }
+}
+
+// Pseudo classes
+
+.hidden {
+  visibility: hidden;
 }
