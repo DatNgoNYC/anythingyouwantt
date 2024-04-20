@@ -1,37 +1,37 @@
-import { useContext, useEffect, useState } from 'react';
-import { AuthContext } from '../../../context/AuthContext';
-import { Order } from '../../../types';
+import { useContext, useEffect, useState } from 'react'
+import { AuthContext } from '../../../context/AuthContext'
+import { Order } from '../../../types'
 
-export { Orders };
+export { Orders }
 
 const Orders = (): React.JSX.Element => {
-  const { userId } = useContext(AuthContext);
-  const [orderList, setOrderList] = useState<Array<Order>>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string>('');
+  const { userId } = useContext(AuthContext)
+  const [orderList, setOrderList] = useState<Array<Order>>([])
+  const [loading, setLoading] = useState<boolean>(true)
+  const [error, setError] = useState<string>('')
 
   useEffect(() => {
     async function loadPage() {
-      if (!userId) return;
+      if (!userId) return
 
       try {
-        setLoading(true);
+        setLoading(true)
 
-        const orders = await fetchOrders(userId);
+        const orders = await fetchOrders(userId)
 
-        setOrderList(orders);
-        setLoading(false);
+        setOrderList(orders)
+        setLoading(false)
       } catch (error) {
-        setError('Error while trying to fetch user info.');
-        setLoading(false);
+        setError('Error while trying to fetch user info.')
+        setLoading(false)
       }
     }
 
-    loadPage();
-  }, [userId]);
+    loadPage()
+  }, [userId])
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{`Error: ${error}`}</div>;
+  if (loading) return <div>Loading...</div>
+  if (error) return <div>{`Error: ${error}`}</div>
 
   return (
     <div>
@@ -43,20 +43,39 @@ const Orders = (): React.JSX.Element => {
               <strong>{order.title}</strong> \n
               <em>{order.orderDate}</em>
             </li>
-          );
+          )
         })}
       </ul>
     </div>
-  );
-};
+  )
+}
 
 async function fetchOrders(userId: string): Promise<Array<Order>> {
-  console.log(`user ${userId} is fetching Orders`);
+  try {
+    const response = await fetch('/api/user/orders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        userId: userId as string,
+      },
+    })
 
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+    if (!response.ok) {
+      console.error(`Failed to get order history for user: ${userId}`)
+      throw Error()
+    } else {
+      const data: Array<Order> = await response.json()
+      data.forEach((order) => {
+        console.log(
+          `Order Title: ${order.title}, Order ID: ${order.orderId}, Order Date: ${order.orderDate}`,
+        )
+      })
 
-  return [
-    { orderId: '0000', title: 'job', orderDate: 'April 11 2024 1:11am' },
-    { orderId: '0001', title: 'thingsss', orderDate: 'April 11 2024 1:12am' },
-  ];
+      // Assuming you want to return something specific after logging the orders
+      return data
+    }
+  } catch (error) {
+    console.error(`Could not get user information.`)
+    throw Error()
+  }
 }
