@@ -64,7 +64,6 @@ async function fetchUserData(userId: string): Promise<UserInfo> {
       )
       return { name: data.name, email: data.email, pfp: data.pfp }
     }
-
   } catch (error) {
     console.error(`Could not get user information : ${error}`)
     throw Error()

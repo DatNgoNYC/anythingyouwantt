@@ -7,7 +7,7 @@
     "test": "jest",
     "lint": "eslint src/**/*.ts",
     "prebuild": "rimraf dist",
-    "build": "tsc build",
+    "build": "tsc",
     "start": "node dist/index.js"
   },
   "author": "",
