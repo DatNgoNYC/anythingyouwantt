@@ -58,7 +58,7 @@ const useExternalGoogleScript = (containerRef: RefObject<HTMLElement>) => {
   })
 
   function handleCredentialResponse(credentialResponse: CredentialResponse) {
-    console.log(`the response from google: ${credentialResponse}`)
+    console.log(`the response from google: ${credentialResponse.credential}`)
 
     fetch('/auth', {
       method: 'POST',
@@ -79,7 +79,7 @@ const useExternalGoogleScript = (containerRef: RefObject<HTMLElement>) => {
       .then((data: { userId: string }) => {
         setUserId('1')
         if (data) {
-          // setUserId(data.userId)
+          setUserId(data.userId)
           console.log(`retreived userId ${data.userId}`)
         }
       })

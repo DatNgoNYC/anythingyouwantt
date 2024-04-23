@@ -12,6 +12,8 @@ type AuthPostRequest = Request<Record<string, never>, Record<string, never>, Aut
 
 // Function to authenticate a user
 async function authenticateUser(req: AuthPostRequest, res: Response): Promise<Response> {
+  console.log('looks like we got a POST auth request!')
+
   const { idToken } = req.body
   if (!idToken) {
     return res.status(400).json({ success: false, error: 'There is no idToken!' })
@@ -30,9 +32,9 @@ async function authenticateUser(req: AuthPostRequest, res: Response): Promise<Re
       )
     }
 
-    return res.status(200).json({ success: true, data: {userId: user.userId} })
+    return res.status(200).json({ userId: user.userId })
   } catch {
-    return res.status(500).json({ success: false, error: 'A network error on our end!' })
+    return res.status(500).json({ error: 'A network error on our end!' })
   }
 }
 
