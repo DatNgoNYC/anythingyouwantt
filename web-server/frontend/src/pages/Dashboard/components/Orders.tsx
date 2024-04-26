@@ -19,7 +19,12 @@ const Orders = (): React.JSX.Element => {
 
         const orders = await fetchOrders(userId)
 
-        setOrderList(orders)
+        if (!orders) {
+          setError('Could not get user data.')
+        } else {
+          setOrderList(orders)
+        }
+
         setLoading(false)
       } catch (error) {
         setError('Error while trying to fetch user info.')
@@ -50,32 +55,31 @@ const Orders = (): React.JSX.Element => {
   )
 }
 
-async function fetchOrders(userId: string): Promise<Array<Order>> {
-  try {
-    const response = await fetch('/api/user/orders', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        userId: userId as string,
-      },
+async function fetchOrders(userId: string): Promise<Array<Order> | void> {
+  const url = '/api/user/orders'
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'User-Id': userId,
+    },
+  }
+
+  const orders = await fetch(url, options)
+    .then(async (response) => {
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error)
+      } else {
+        return response.json()
+      }
+    })
+    .then((data: { orders: Order[] }) => {
+      return data.orders
+    })
+    .catch((error) => {
+      console.error(`Error while trying to fetch orders: ${error}.`)
     })
 
-    if (!response.ok) {
-      console.error(`Failed to get order history for user: ${userId}`)
-      throw Error()
-    } else {
-      const data: Array<Order> = await response.json()
-      data.forEach((order) => {
-        console.log(
-          `Order Title: ${order.title}, Order ID: ${order.orderId}, Order Date: ${order.orderDate}`,
-        )
-      })
-
-      // Assuming you want to return something specific after logging the orders
-      return data
-    }
-  } catch (error) {
-    console.error(`Could not get user information.`)
-    throw Error()
-  }
+  return orders
 }

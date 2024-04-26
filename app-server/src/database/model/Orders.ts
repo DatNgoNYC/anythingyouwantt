@@ -1,4 +1,4 @@
-import { db } from "../db"
+import { db } from '../db'
 
 export type Order = {
   id: number
@@ -10,28 +10,30 @@ export type Order = {
 export async function createOrderTable(): Promise<void> {
   return db.query(`
     CREATE TABLE IF NOT EXISTS "Order" (
-      "id" SERIAL PRIMARY KEY
+      "id" SERIAL PRIMARY KEY,
       "title" VARCHAR(255) NOT NULL,
       "date" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      "userId" VARCHAR(255) REFERENCES "User"("uniqueId")
+      "userId" VARCHAR(255) REFERENCES "User"("userId")
+      ON DELETE CASCADE
     )
   `)
 }
 
-export async function createOrder(userId: string, title: string) {
-  return db.tx(async (t) => {
-    await t.none(
-      `
-      INSERT INTO "Order" ("title", "userId")
-      VALUES ($1, $2)
-      `,
-      [title, userId]
-    )
-  })
+export async function createOrder(userId: string, title: string): Promise<{ id: number; title: string; date: string }> {
+  const order = db.one(
+    `
+  INSERT INTO "Order" ("userId", "title")
+  VALUES ($1, $2)
+  RETURNING *;  
+  `,
+    [userId, title]
+  )
+
+  return order
 }
 
-export async function getAllOrders(userId: string) {
-  return db.query(
+export async function getAllOrders(userId: string): Promise<Array<{ id: number; title: string; date: string }>> {
+  const orders = db.manyOrNone(
     `
     SELECT "id", "title", "date"
     FROM "Order"
@@ -40,4 +42,6 @@ export async function getAllOrders(userId: string) {
     `,
     [userId]
   )
+
+  return orders
 }

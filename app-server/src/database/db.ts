@@ -1,18 +1,16 @@
 import pgPromise from 'pg-promise'
 import { createUserTable, deleteUser } from './model/User'
-import { getAllOrders, createOrder } from './model/Orders'
+import { getAllOrders, createOrder, createOrderTable } from './model/Orders'
 
-
-const dbUrl = process.env.DATABASE_URL as string;
-export const db = pgPromise()(dbUrl);
-
-
+const dbUrl = process.env.DATABASE_URL as string
+export const db = pgPromise()(dbUrl)
 
 async function initializeDatabase() {
   try {
-    createUserTable()
+    await createUserTable()
+    await createOrderTable()
   } catch (error) {
-    throw Error
+    console.error('Failed to initialize database:', error)
   }
 }
 

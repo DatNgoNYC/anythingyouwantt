@@ -1,47 +1,42 @@
 import { Request, Response } from 'express'
 import { Database } from '../database/db'
+import { User } from '../database/model/User'
 
 async function getUserInformation(req: Request, res: Response): Promise<Response> {
-  const userId = req.header('user-id')
+  const userId = req.header('User-Id')
 
   if (!userId) {
-    return res.status(400).json({ success: false, error: 'There is no userId authorization token!' })
+    return res.status(400).json('There is no userId authorization token!')
   }
 
   try {
-    const user = await Database.getUser(userId)
+    const user: User | null = await Database.getUser(userId)
 
     if (user) {
-      return res.status(200).json({ success: true, data: user })
+      const { name, email, pfp } = user
+      return res.status(200).json({ name, email, pfp })
     } else {
-      return res
-        .status(500)
-        .json({ success: false, error: "We got the userId, but we don't seem to have that user in our system." })
+      return res.status(500).json("We can't find that user in our system right now.")
     }
   } catch {
-    return res.status(500).json({ success: false, error: 'A network error on our end!' })
+    return res.status(500).json('A network error on our end!')
   }
 }
 
 async function deleteUserAccount(req: Request, res: Response): Promise<Response> {
-  const userId = req.header('user-id')
+  const userId = req.header('User-Id')
 
   if (!userId) {
-    return res.status(400).json({ success: false, error: 'There is no userId authorization token!' })
+    return res.status(400).json('There is no userId authorization token!')
   }
 
   try {
-    const user = await Database.deleteUser(userId)
+    const user: User = await Database.deleteUser(userId)
 
-    if (user) {
-      return res.status(200).json({ success: true, data: user })
-    } else {
-      return res
-        .status(500)
-        .json({ success: false, error: "We got the userId, but we don't seem to have that user in our system." })
-    }
+    const { name, email, pfp } = user
+    return res.status(200).json({ name, email, pfp })
   } catch {
-    return res.status(500).json({ success: false, error: 'A network error on our end!' })
+    return res.status(500).json('A network error on our end!')
   }
 }
 

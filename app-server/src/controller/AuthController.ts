@@ -12,11 +12,11 @@ type AuthPostRequest = Request<Record<string, never>, Record<string, never>, Aut
 
 // Function to authenticate a user
 async function authenticateUser(req: AuthPostRequest, res: Response): Promise<Response> {
-  console.log('looks like we got a POST auth request!')
+  console.log('Received a POST auth request.')
 
   const { idToken } = req.body
   if (!idToken) {
-    return res.status(400).json({ success: false, error: 'There is no idToken!' })
+    return res.status(400).json('Authentication requires an idToken!')
   }
 
   try {
@@ -32,9 +32,14 @@ async function authenticateUser(req: AuthPostRequest, res: Response): Promise<Re
       )
     }
 
-    return res.status(200).json({ userId: user.userId })
+    if (user) {
+      const { userId } = user
+      return res.status(200).json({ userId })
+    } else {
+      return res.status(500).json('We could not register the user.')
+    }
   } catch {
-    return res.status(500).json({ error: 'A network error on our end!' })
+    return res.status(500).json('A network error on our end!')
   }
 }
 

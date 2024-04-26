@@ -58,9 +58,13 @@ const useExternalGoogleScript = (containerRef: RefObject<HTMLElement>) => {
   })
 
   function handleCredentialResponse(credentialResponse: CredentialResponse) {
-    console.log(`the response from google: ${credentialResponse.credential}`)
+    console.log(
+      `A user is trying to login and the idToken received from from google: ${credentialResponse.credential}`,
+    )
+    console.log(`The client is now sending the request to the /auth endpoint.`)
 
-    fetch('/auth', {
+    const url = '/auth'
+    const options = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -68,23 +72,27 @@ const useExternalGoogleScript = (containerRef: RefObject<HTMLElement>) => {
       body: JSON.stringify({
         idToken: credentialResponse.credential,
       }),
-    })
-      .then((response) => {
+    }
+
+    fetch(url, options)
+      .then(async (response) => {
         if (!response.ok) {
-          console.error('Response was not successful.')
+          const error = await response.json()
+          throw new Error(error.message)
         } else {
           return response.json()
         }
       })
       .then((data: { userId: string }) => {
-        setUserId('1')
         if (data) {
           setUserId(data.userId)
-          console.log(`retreived userId ${data.userId}`)
+          console.log(`Successfully logged in userId ${data.userId}`)
         }
       })
       .catch((error) => {
-        console.error(`Error fetching data: ${error}`)
+        console.error(
+          `Error while trying to hit the /auth endpoint: ${error.message}.`,
+        )
       })
   }
 }

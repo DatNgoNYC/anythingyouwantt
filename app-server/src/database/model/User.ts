@@ -21,37 +21,39 @@ export async function createUserTable(): Promise<void> {
 }
 
 export async function getUser(userId: string): Promise<User | null> {
-  return await db.oneOrNone(
+  const user = await db.oneOrNone(
     `
     SELECT * FROM "User"
     WHERE "userId" = $1;
     `,
     [userId]
   )
+
+  return user
 }
 
 export async function createUser(userId: string, name: string, email: string, picture: string): Promise<User> {
-  const insertQuery = `
+  const newUser = await db.one(
+    `
   INSERT INTO "User" ("userId", "name", "email", "pfp")
   VALUES ($1, $2, $3, $4)
   RETURNING *;  
-`
-  const newUser = await db.one(insertQuery, [userId, name, email, picture])
+  `,
+    [userId, name, email, picture]
+  )
 
   return newUser
 }
 
 export async function deleteUser(userId: string): Promise<User> {
-  const deleteQuery = `
-  DELETE FROM "User"
-  WHERE "userId" = $1
-  RETURNING *;  
-`
-  const deletedUser = await db.oneOrNone(deleteQuery, [userId])
-
-  if (!deletedUser) {
-    throw new Error('User not found')
-  }
+  const deletedUser = await db.one(
+    `
+    DELETE FROM "User"
+    WHERE "userId" = $1
+    RETURNING *;  
+    `,
+    [userId]
+  )
 
   return deletedUser
 }
