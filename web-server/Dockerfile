@@ -1,5 +1,5 @@
 # Build the static react client-side-rendered application
-FROM node:latest as build
+FROM node:22 as build
 
 WORKDIR /app
 
@@ -11,7 +11,7 @@ COPY frontend/ ./
 
 RUN npm run build
 
-FROM nginx:latest as runtime
+FROM nginx:bookworm as runtime
 
 COPY --from=build /app/dist /usr/share/nginx/html
 
