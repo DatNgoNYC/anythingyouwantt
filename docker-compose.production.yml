@@ -1,0 +1,7 @@
+version: '3.8'
+
+services:
+  webserver:
+    volumes:
+      - /etc/letsencrypt/live/anythingyouwantt.com/privkey.pem:/etc/nginx/ssl/webserver.key
+      - /etc/letsencrypt/live/anythingyouwantt.com/fullchain.pem:/etc/nginx/ssl/webserver.crt
