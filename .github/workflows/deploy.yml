@@ -1,0 +1,63 @@
+name: Deployment
+
+on:
+  push:
+    branches:
+      - 'production*' # Triggers the workflow for any push to branches starting with 'production'
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push Docker images
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/appserver:latest ./appserver
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/appserver:latest
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/webserver:latest ./webserver
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/webserver:latest
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Copy docker-compose and env file to EC2
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ec2-user
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: 'docker-compose.production.yml'
+          target: '/home/ec2-user'
+
+      - name: Deploy on EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > /home/ubuntu/anythingyouwantt/.env
+            echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> /home/ubuntu/anythingyouwantt/.env
+
+            docker-compose -f /home/ubuntu/anythingyouwantt/docker-compose.production.yml down
+            docker system prune -a -f
+
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/appserver:latest
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/webserver:latest
+            
+            docker-compose -f /home/ubuntu/anythingyouwantt/docker-compose.production.yml up -d
