@@ -3,7 +3,7 @@ name: Deployment
 on:
   push:
     branches:
-      - 'production*' # Triggers the workflow for any push to branches starting with 'production'
+      - 'prod*' # Triggers the workflow for any push to branches starting with 'production'
 
 jobs:
   build-and-push:
