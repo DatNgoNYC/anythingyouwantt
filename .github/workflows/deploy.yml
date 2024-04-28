@@ -3,7 +3,7 @@ name: Deployment
 on:
   push:
     branches:
-      - 'production*' # Triggers the workflow for any push to branches starting with 'production'
+      - 'prod*' # Triggers the workflow for any push to branches starting with 'production'
 
 jobs:
   build-and-push:
@@ -23,9 +23,9 @@ jobs:
 
       - name: Build and push Docker images
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/appserver:latest ./appserver
+          docker build --platform linux/amd64 -t ${{ secrets.DOCKERHUB_USERNAME }}/appserver:latest ./app-server
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/appserver:latest
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/webserver:latest ./webserver
+          docker build --platform linux/amd64 -t ${{ secrets.DOCKERHUB_USERNAME }}/webserver:latest ./web-server
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/webserver:latest
 
   deploy:
@@ -35,29 +35,33 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Copy docker-compose and env file to EC2
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ec2-user
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: 'docker-compose.production.yml'
-          target: '/home/ec2-user'
+      - name: Copy docker-compose to EC2
+        env:
+          PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          HOSTNAME: ${{ secrets.EC2_HOST }}
+          USER_NAME: ubuntu
+        run: |
+          echo "$PRIVATE_KEY" > private_key.pem && chmod 600 private_key.pem
+          scp -o StrictHostKeyChecking=no -i private_key.pem docker-compose.production.yml ${USER_NAME}@${HOSTNAME}:/home/${USER_NAME}/anythingyouwantt
 
-      - name: Deploy on EC2
-        uses: appleboy/ssh-action@master
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > /home/ubuntu/anythingyouwantt/.env
-            echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> /home/ubuntu/anythingyouwantt/.env
+          key: ${{secrets.SSH_PRIVATE_KEY}}
+          script: 
+            export DATABASE_URL="${{ secrets.DATABASE_URL }}"
+            export POSTGRES_PASSWORD="${{ secrets.POSTGRES_PASSWORD }}"
+
+            echo "DATABASE_URL=$DATABASE_URL" > /home/ubuntu/anythingyouwantt/.env
+            echo "POSTGRES_PASSWORD=$POSTGRES_PASSWORD" >> /home/ubuntu/anythingyouwantt/.env
 
             docker-compose -f /home/ubuntu/anythingyouwantt/docker-compose.production.yml down
+
             docker system prune -a -f
 
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/appserver:latest
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/webserver:latest
-            
+            docker image pull datngonyc/appserver:latest
+            docker image pull datngonyc/webserver:latest
+
             docker-compose -f /home/ubuntu/anythingyouwantt/docker-compose.production.yml up -d
