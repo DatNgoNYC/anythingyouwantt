@@ -7,6 +7,8 @@
   top: 0;
   left: 0;
 
+  background-color: #ffe9d9;
+
   .AuthButtonContainer {
     position: absolute; // Absolute positioning within a relative parent
     top: 5%;
@@ -29,10 +31,19 @@
   }
 
   .Logo {
+    /* Posititioning */
     position: absolute;
-    top: 50%;
+    top: 37%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scaleY(1.1);
+
+    /* font and color */
+    font-size: 96px;
+    font-weight: 100;
+    white-space: nowrap;
+    color: transparent;
+    background: linear-gradient(to right, #816774 0%, #F64A4A 100%);
+    background-clip: text;
   }
 
   .SearchBar {

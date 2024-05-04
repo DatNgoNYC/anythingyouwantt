@@ -30,7 +30,7 @@ const AuthButtonContainer = () => {
 }
 
 const Logo = () => {
-  return <div className={styles.Logo}>Logo</div>
+  return <div className={styles.Logo}>Anything You Want</div>
 }
 
 export default Home
