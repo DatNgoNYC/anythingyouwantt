@@ -61,13 +61,6 @@ h6 {
   isolation: isolate;
 }
 
-/*
-  WIREFRAMING
-*/
-div {
-  border: 1px solid black;
-}
-
 @font-face {
   font-family: 'Playfair Display';
   src: url('./assets/PlayfairDisplay-VariableFont_wght.ttf') format('opentype');

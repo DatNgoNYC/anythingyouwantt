@@ -11,10 +11,16 @@
 
   .AuthButtonContainer {
     position: absolute; // Absolute positioning within a relative parent
-    top: 5%;
-    left: 5%;
+    top: 40px;
+    left: 50px;
     width: auto; // Auto width to adjust based on content
     height: auto; // Auto height to adjust based on content
+    background-color: rgba(
+      255,
+      255,
+      255,
+      0.5
+    ); // Semi-transparent background to enhance glow visibility
 
     /* Overlapping button positioning using visibility for conditional rendering */
     .GoogleSignInButton {
@@ -33,24 +39,69 @@
   .Logo {
     /* Posititioning */
     position: absolute;
-    top: 37%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%) scaleY(1.1);
 
     /* font and color */
-    font-size: 96px;
+    font-size: 72px;
     font-weight: 100;
     white-space: nowrap;
     color: transparent;
-    background: linear-gradient(to right, #816774 0%, #F64A4A 100%);
+    background: linear-gradient(to right, #816774 0%, #f64a4a 100%);
     background-clip: text;
   }
 
   .SearchBar {
+    /* Positioning */
     position: absolute;
-    top: 60%;
+    top: 53%;
     left: 50%;
     transform: translate(-50%, -50%);
+
+    /* Display */
+    display: flex;
+    width: 400px;
+
+    /* Styling */
+    padding: 6px 2px 6px 10px;
+    background-color: white;
+
+    box-shadow:
+      inset 2px 2px 4px rgba(0, 0, 0, 0.25) /* Top and right shadow */,
+      inset -2px 2px 4px rgba(0, 0, 0, 0.25); /* Top and left shadow */
+
+      &.disabled {
+        cursor:not-allowed; 
+        opacity: .5;
+  
+        .input,
+        .button {
+          pointer-events: none; // Comment out for testing cursor visibility
+        }
+      }
+
+    .input {
+      flex: 1;
+      border: 0;
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    .button {
+      background: url('https://cdn.iconscout.com/icon/free/png-256/free-magnifying-glass-5136281-4285441.png')
+        no-repeat center;
+      background-size: 60%;
+      width: 40px;
+      background-color: transparent;
+      border: 0;
+
+      &:focus {
+        outline: none;
+      }
+    }
   }
 }
 

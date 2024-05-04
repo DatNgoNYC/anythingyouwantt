@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { Searchbar } from './components/Searchbar'
 import { AuthContext } from '../../context/AuthContext'
 import { GoogleSignInButton } from './components/AuthButtons/GoogleSignInButton'
@@ -6,23 +6,40 @@ import { OpenDashboardButton } from './components/AuthButtons/OpenDashboardButto
 import styles from './Home.module.scss'
 
 const Home: React.FC = () => {
+  const [highlightLogin, setHighlightLogin] = useState(false)
+
   return (
     <div className={`${styles.Home}`}>
-      <AuthButtonContainer />
+      <AuthButtonContainer highlightLogin={highlightLogin} />
       <Logo />
-      <Searchbar />
+      <Searchbar
+        triggerLoginIndicator={() => {
+          setHighlightLogin(true)
+          console.log('setting highlight to true')
+          setTimeout(() => {
+            setHighlightLogin(false)
+            console.log('setting highlight to false')
+          }, 2000)
+        }}
+      />
     </div>
   )
 }
 
-const AuthButtonContainer = () => {
+type AuthButtonContainerProp = {
+  highlightLogin: boolean
+}
+
+const AuthButtonContainer = ({ highlightLogin }: AuthButtonContainerProp) => {
   const { userId } = useContext(AuthContext)
 
   const googleVisible = !userId
   const dashboardVisible = !!userId
 
   return (
-    <div className={styles.AuthButtonContainer}>
+    <div
+      className={`${styles.AuthButtonContainer} ${highlightLogin ? 'shimmer-effect' : ''}`}
+    >
       <GoogleSignInButton isVisible={googleVisible} />
       <OpenDashboardButton isVisible={dashboardVisible} />
     </div>
