@@ -1,0 +1,105 @@
+button,
+input[type='submit'],
+input[type='reset'] {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+
+.Dashboard {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: -100%;
+  background: white;
+  transition: transform 0.5s ease-in-out;
+
+  display: flex;
+
+  border: 2px black solid;
+
+  .SidePanel {
+    flex: 0 1.5 320px;
+    display: flex;
+    flex-direction: column;
+
+    padding: 20px;
+
+    background-color: #f8f8f8;
+
+    .BackButton {
+      transition: all 0.8s;
+      height: 40px;
+      text-align: left;
+
+      .Icon {
+        font-size: large;
+        transition: none;
+      }
+
+      .Text {
+        margin-left: 2px;
+        font-size: small;
+        font-weight: 700;
+      }
+
+      &:hover {
+        transform: scaleX(1.15);
+        transform-origin: left;
+      }
+    }
+
+    .Menu {
+      margin-top: 20px;
+      overflow: visible;
+
+      li {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        list-style-type: none;
+        font-size: large;
+        transition: all 0.3s;
+
+        &:hover {
+          transform: translateX(10px);
+          transform-origin: left;
+        }
+      }
+
+      li:not(.highlighted) {
+        opacity: 0.3; // Only apply to non-highlighted items
+      }
+
+      li.highlighted {
+        opacity: 1; // Ensure highlighted items are fully visible
+      }
+    }
+
+    .SignOutButton {
+      margin-top: auto;
+      width: fit-content;
+      font-style: italic;
+      font-size: small;
+      transition: all 0.5s;
+
+      &:hover {
+        transform: scale(1.4);
+        transform-origin: left;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .Page {
+    flex: 4;
+  }
+}
+
+.active {
+  transform: translateX(100%);
+}

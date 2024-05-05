@@ -11,6 +11,8 @@
 */
 * {
   margin: 0;
+  overflow: hidden;  /* Hides both horizontal and vertical scrollbars */
+
 }
 /*
   Typographic tweaks!
