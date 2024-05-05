@@ -1,12 +1,24 @@
 import { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../../../context/AuthContext'
 import { Order } from '../../../types'
+import styles from '../Dashboard.module.scss'
 
 export { Orders }
 
 const Orders = (): React.JSX.Element => {
   const { userId } = useContext(AuthContext)
-  const [orderList, setOrderList] = useState<Array<Order>>([])
+  const [orderList, setOrderList] = useState<Array<Order>>([
+    {
+      orderId: '0',
+      title: 'test',
+      orderDate: 'June 12, 2024',
+    },
+    {
+      orderId: '1',
+      title: 'test2',
+      orderDate: 'June 15, 2024',
+    },
+  ])
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string>('')
 
@@ -35,18 +47,21 @@ const Orders = (): React.JSX.Element => {
     loadPage()
   }, [userId])
 
-  if (loading) return <div>Loading...</div>
-  if (error) return <div>{`Error: ${error}`}</div>
+  // if (loading) return <div>Loading...</div>
+  // if (error) return <div>{`Error: ${error}`}</div>
 
   return (
-    <div>
-      <h2>Order List</h2>
+    <div className={styles.Orders}>
       <ul>
         {orderList.map((order) => {
           return (
             <li key={order.orderId}>
-              <strong>{order.title}</strong> \n
-              <em>{order.orderDate}</em>
+              <p>
+                <b>Title: </b> {order.title}
+              </p>
+              <p>
+                <b>Date: </b> {order.orderDate}
+              </p>
             </li>
           )
         })}
