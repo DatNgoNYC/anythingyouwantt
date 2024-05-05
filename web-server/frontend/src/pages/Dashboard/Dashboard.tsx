@@ -37,7 +37,7 @@ const Page = ({ currentPage }: PageProps): React.JSX.Element => {
     }
   };
 
-  return <div className={`${styles.page}`}>{renderCurrentPage(currentPage)}</div>;
+  return <div className={`${styles.Page}`}>{renderCurrentPage(currentPage)}</div>;
 };
 
 export { Dashboard };

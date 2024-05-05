@@ -33,7 +33,7 @@ input[type='reset'] {
     background-color: #f8f8f8;
 
     .BackButton {
-      transition: all 0.8s;
+      transition: all 0.5s;
       height: 40px;
       text-align: left;
 
@@ -102,4 +102,42 @@ input[type='reset'] {
 
 .active {
   transform: translateX(100%);
+}
+
+
+/* You Page */
+.You {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  padding: 30px;
+  padding-left: 50px;
+  padding-bottom: 30px;
+  flex-direction: column;
+
+  img {
+    margin-top: 65px;
+    align-self: center;
+    border-radius: 50%;
+  }
+
+  p:first-of-type {
+    margin-top: 60px;
+  }
+
+  p {
+    margin-top: 10px;
+  }
+
+  button {
+    font-weight: bold;
+    font-style: italic;
+    border: 2px solid black;
+    border-radius: 25px;
+    width: fit-content;
+    padding: 3px 10px 3px 10px;
+
+    margin-top: auto;
+    align-self: flex-end;
+  }
 }

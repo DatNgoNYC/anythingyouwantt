@@ -56,7 +56,7 @@
   .Logo {
     /* Posititioning */
     position: absolute;
-    top: 40%;
+    top: 36%;
     left: 50%;
     transform: translate(-50%, -50%) scaleY(1.1);
 
@@ -72,7 +72,7 @@
   .SearchBar {
     /* Positioning */
     position: absolute;
-    top: 53%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 
@@ -101,6 +101,7 @@
     .input {
       flex: 1;
       border: 0;
+      text-align: center;
 
       &:focus {
         outline: none;
@@ -128,6 +129,17 @@
           0px 0px 25px rgb(255, 255, 0),
           0px 0px 30px rgb(255, 255, 0),
           0px 0px 35px rgb(255, 255, 0);
+      }
+
+      &:active {
+        transform-origin: center;
+        text-shadow:
+          0px 0px 20px rgb(255, 115, 0),
+          0px 0px 20px rgb(255, 115, 0),
+          0px 0px 20px rgb(255, 115, 0),
+          0px 0px 25px rgb(255, 115, 0),
+          0px 0px 30px rgb(255, 115, 0),
+          0px 0px 35px rgb(255, 115, 0);
       }
     }
   }
