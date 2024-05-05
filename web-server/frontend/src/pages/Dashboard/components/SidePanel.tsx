@@ -1,77 +1,78 @@
-import { Dispatch, SetStateAction, useContext } from 'react';
-import { MenuProps } from '../../../types';
-import { DashboardContext } from '../../../context/DashboardContext';
-import styles from '../style/Dashboard.module.css';
-import { AuthContext } from '../../../context/AuthContext';
+import { Dispatch, SetStateAction, useContext } from 'react'
+import { MenuProps } from '../../../types'
+import { DashboardContext } from '../../../context/DashboardContext'
+import styles from '../Dashboard.module.scss'
+import { AuthContext } from '../../../context/AuthContext'
 
-export { SidePanel };
-export type { SidePanelProps };
+export { SidePanel }
+export type { SidePanelProps }
 
 type SidePanelProps = {
-  currentPage: string;
-  setCurrentPage: Dispatch<SetStateAction<string>>;
-};
+  currentPage: string
+  setCurrentPage: Dispatch<SetStateAction<string>>
+}
 
 const SidePanel = ({
   currentPage,
   setCurrentPage,
 }: SidePanelProps): React.JSX.Element => {
   return (
-    <div>
+    <div className={`${styles.SidePanel}`}>
       <BackButton />
       <Menu currentPage={currentPage} setCurrentPage={setCurrentPage} />
       <SignOutButton />
     </div>
-  );
-};
+  )
+}
 
 const BackButton = (): React.JSX.Element => {
-  const { setIsDashboardActive } = useContext(DashboardContext);
+  const { setIsDashboardActive } = useContext(DashboardContext)
   return (
-    <div
-      className={`${styles.backButton}`}
+    <button
+      className={`${styles.BackButton}`}
       onClick={() => setIsDashboardActive(false)}
     >
-      Back
-    </div>
-  );
-};
+      <span className={`${styles.Icon}`}>←</span>{' '}
+      <span className={`${styles.Text}`}>back</span>
+    </button>
+  )
+}
 
 const Menu = ({
   currentPage,
   setCurrentPage,
 }: MenuProps): React.JSX.Element => {
   return (
-    <div id="Menu">
-      <div
-        className={currentPage === 'you' ? styles.highlighted : ''}
+    <div className={styles.Menu}>
+      <li
+        className={`${currentPage === 'you' ? styles.highlighted : ''}`}
         onClick={() => setCurrentPage('you')}
       >
         You
-      </div>
-      <div
+      </li>
+      <li
         className={currentPage === 'orders' ? styles.highlighted : ''}
         onClick={() => setCurrentPage('orders')}
       >
         What You Wanted
-      </div>
+      </li>
     </div>
-  );
-};
+  )
+}
 
 const SignOutButton = (): React.JSX.Element => {
-  const { setUserId } = useContext(AuthContext);
-  const { setIsDashboardActive } = useContext(DashboardContext);
+  const { setUserId } = useContext(AuthContext)
+  const { setIsDashboardActive } = useContext(DashboardContext)
 
   return (
-    <div
-      className={`${styles.signOutButton}`}
+    <button
+      className={`${styles.SignOutButton}`}
       onClick={() => {
-        setUserId(null);
-        setIsDashboardActive(false);
+        setUserId(null)
+        setIsDashboardActive(false)
       }}
     >
       Sign Out
-    </div>
-  );
-};
+    </button>
+  )
+}

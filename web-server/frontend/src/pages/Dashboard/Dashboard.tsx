@@ -4,7 +4,7 @@ import { You } from './components/You';
 import { PageProps } from '../../types';
 import { Orders } from './components/Orders';
 import { DashboardContext } from '../../context/DashboardContext';
-import styles from './style/Dashboard.module.css';
+import styles from './Dashboard.module.scss';
 
 const Dashboard = () => {
   const { isDashboardActive } = useContext(DashboardContext);
@@ -13,7 +13,7 @@ const Dashboard = () => {
   return (
     <div
       className={`
-    ${styles.dashboard} 
+    ${styles.Dashboard} 
     ${isDashboardActive ? styles.active : ''}`}
 
     >
@@ -37,7 +37,7 @@ const Page = ({ currentPage }: PageProps): React.JSX.Element => {
     }
   };
 
-  return <div className={`${styles.page}`}>{renderCurrentPage(currentPage)}</div>;
+  return <div className={`${styles.Page}`}>{renderCurrentPage(currentPage)}</div>;
 };
 
 export { Dashboard };

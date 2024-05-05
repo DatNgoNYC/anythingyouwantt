@@ -3,14 +3,17 @@ import styles from '../Home.module.scss'
 import { AuthContext } from '../../../context/AuthContext'
 import { Order } from '../../../types'
 
-export const Searchbar = () => {
+type SearchBarProps = {
+  triggerLoginIndicator: () => void
+}
+
+export const Searchbar = ({ triggerLoginIndicator }: SearchBarProps) => {
   const { userId } = useContext(AuthContext)
   const [title, setTitle] = useState('')
   const [isProcessingRequest, setIsProcessingRequest] = useState(false)
 
   async function sendRequest() {
     setIsProcessingRequest(true)
-
     try {
       const url = '/api/user/orders'
       const options = {
@@ -50,70 +53,28 @@ export const Searchbar = () => {
 
   return (
     <div>
-      <div className={`${styles.SearchBar} ${userId ? '' : styles.hidden}`}>
+      <div className={`${styles.SearchBar} ${!userId ? styles.disabled : ''}`}>
         <input
+          className={`${styles.input}`}
           type="text"
-          placeholder="What do you want?"
+          placeholder="Whatever you want"
           value={title}
+          spellCheck={false}
           onChange={(event) => {
             setTitle(event.target.value)
           }}
+          onFocus={() => {
+            if (!userId) {
+              triggerLoginIndicator() // Call the login trigger if the user is not logged in
+            }
+          }}
         />
         <button
+          className={`${styles.button}`}
           onClick={sendRequest}
-          disabled={isProcessingRequest}
-        ></button>
+          disabled={isProcessingRequest || !userId}
+        >🔍</button>
       </div>
-      {/* 
-      {isProcessingRequest ? (
-        <RequestModal
-          userId={userId as string} // Assumed non-null since the searchBar is visible
-          title={title}
-          closeModal={() => setIsProcessingRequest(false)}
-        />
-      ) : (
-        ''
-      )} */}
     </div>
   )
 }
-
-// type RequestModalProps = {
-//   userId: string
-//   title: string
-//   closeModal: () => void
-// }
-
-// const RequestModal: React.FC<RequestModalProps> = ({
-//   userId,
-//   title,
-//   closeModal,
-// }) => {
-//   // const [isInTransit, setIsInTransit] = useState(true)
-//   async function sendRequest() {
-//     try {
-//       const response = await fetch('/api/user/things', {
-//         method: 'POST',
-//         headers: { 'Content-Type': 'application/json', userId },
-//         body: JSON.stringify({ title }),
-//       })
-
-//       if (!response.ok) {
-//         console.error(`Failed to fulfilled request: ${title}.`)
-//       } else {
-//         const data = await response.json()
-//         console.log(`Successfully fulfilled request: ${data.title}.`)
-//       }
-//     } catch (error) {
-//       console.error(`There was an error: ${error}`)
-//     } finally {
-//       closeModal()
-//     }
-//   }
-
-//   useEffect(() => {
-//     sendRequest()
-//   }, [])
-
-//   return <div></div>
-// }
