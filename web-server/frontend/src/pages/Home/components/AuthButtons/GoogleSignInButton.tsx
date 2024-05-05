@@ -58,8 +58,8 @@ const useExternalGoogleScript = (containerRef: RefObject<HTMLElement>) => {
   })
 
   function handleCredentialResponse(credentialResponse: CredentialResponse) {
-    setUserId("1")
-    return;
+    // setUserId("1")
+    // return;
 
     console.log(
       `A user is trying to login and the idToken received from from google: ${credentialResponse.credential}`,

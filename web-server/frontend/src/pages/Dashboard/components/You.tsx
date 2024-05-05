@@ -8,11 +8,18 @@ const You = (): React.JSX.Element => {
   const [isLoading, setisLoading] = useState<boolean>(true)
   const [error, setError] = useState<string>('')
   const { userId } = useContext(AuthContext)
-  const [userInfo, setUserInfo] = useState<UserInfo>({
-    name: 'Dat Ngo',
-    email: 'datngonyc@gmail.com',
-    pfp: 'https://lh3.googleusercontent.com/a/ACg8ocL7P8CGwpHjNEZzmEAqjUqM5Pxw17T7ruEKg0Jm1HsXuZZxrTg=s288-c-no',
-  })
+  const [userInfo, setUserInfo] = useState<UserInfo>(
+    {
+      name: '',
+      email: '',
+      pfp: '',
+    },
+    //   {
+    //   name: 'Dat Ngo',
+    //   email: 'datngonyc@gmail.com',
+    //   pfp: 'https://lh3.googleusercontent.com/a/ACg8ocL7P8CGwpHjNEZzmEAqjUqM5Pxw17T7ruEKg0Jm1HsXuZZxrTg=s288-c-no',
+    // }
+  )
 
   useEffect(() => {
     async function loadPage() {
@@ -34,14 +41,18 @@ const You = (): React.JSX.Element => {
     loadPage()
   }, [userId])
 
-  // if (isLoading) return <div>Loading...</div>
-  // if (error) return <div>{`Error: ${error}`}</div>
+  if (isLoading) return <div>Loading...</div>
+  if (error) return <div>{`Error: ${error}`}</div>
 
   return (
     <div className={`${styles.You}`}>
       <img src={userInfo.pfp} alt="profile picture" />
-      <p><b>Name:</b> {userInfo.name}</p>
-      <p><b>Email:</b> {userInfo.email}</p>
+      <p>
+        <b>Name:</b> {userInfo.name}
+      </p>
+      <p>
+        <b>Email:</b> {userInfo.email}
+      </p>
       <button onClick={() => sendDeleteRequest(userId as string)}>
         Delete Account
       </button>
