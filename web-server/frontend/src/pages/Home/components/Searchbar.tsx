@@ -68,9 +68,12 @@ export const Searchbar = ({ triggerLoginIndicator }: SearchBarProps) => {
               triggerLoginIndicator() // Call the login trigger if the user is not logged in
             }
           }}
-
         />
-        <button className={`${styles.button}`} onClick={sendRequest} disabled={isProcessingRequest || !userId} ></button>
+        <button
+          className={`${styles.button}`}
+          onClick={sendRequest}
+          disabled={isProcessingRequest || !userId}
+        >🔍</button>
       </div>
     </div>
   )
