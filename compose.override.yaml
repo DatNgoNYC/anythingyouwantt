@@ -1,4 +1,4 @@
 services:
   gateway:
     volumes:
-      - /etc/ssl/localcerts:/etc/nginx/ssl:ro  # 🔐 Local self-signed SSL cert
+      - /etc/ssl/localcerts:/etc/letsencrypt:ro  # 🔐 Local self-signed SSL cert

@@ -12,7 +12,7 @@ RUN npm install
 COPY . .
 
 # Build the TypeScript application
-RUN npm run build
+RUN node --max-old-space-size=1024 node_modules/.bin/tsc -p ./tsconfig-build.json
 
 # Stage 2: Production image
 FROM node:22-alpine AS runtime
