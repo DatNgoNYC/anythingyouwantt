@@ -1,0 +1,45 @@
+{
+  "name": "rest-api",
+  "version": "3.0.0",
+  "description": "anythingyouwantt.com's rest-api",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "lint": "eslint --max-warnings=0",
+    "format:check": "prettier --check .",
+    "format": "prettier --write .",
+    "test": "node --no-warnings --experimental-vm-modules ./node_modules/.bin/jest",
+    "build": "rm -rf dist && tsc -p tsconfig-build.json",
+    "start": "node --no-warnings dist/server.js",
+    "dev": " npm run build && node --no-warnings --env-file=.env dist/server.js",
+    "clean": "rm -rf dist",
+    "clean:hard": "rm -rf dist && rm -rf node_modules"
+  },
+  "author": "ayw_corporate",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@eslint/js": "^9.14.0",
+    "@types/eslint__js": "^8.42.3",
+    "@types/express": "^5.0.0",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.9.0",
+    "@types/supertest": "^6.0.2",
+    "eslint": "^9.14.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-jest": "^28.9.0",
+    "jest": "^29.7.0",
+    "prettier": "^3.3.3",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.2.5",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.14.0"
+  },
+  "dependencies": {
+    "bullmq": "^5.34.5",
+    "express": "^5.0.1",
+    "google-auth-library": "^9.15.0",
+    "pg-promise": "^11.10.2"
+  }
+}

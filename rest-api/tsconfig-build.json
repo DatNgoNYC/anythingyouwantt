@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "noEmitOnError": true,
+    "sourceMap": false, // Turn off source maps unless needed for debugging
+    "declaration": false, // No need for `.d.ts` files in a runnable app
+    "strict": true,
+    "target": "ES2022", // Match runtime environment
+    "module": "NodeNext", // For modern Node.js module handling
+    "moduleResolution": "nodenext"
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["test/**/*"]
+}
