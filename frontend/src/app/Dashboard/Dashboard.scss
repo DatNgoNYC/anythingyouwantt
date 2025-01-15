@@ -1,0 +1,221 @@
+.dashboard {
+  border: 2px solid rgb(0, 0, 0);
+  background-color: white;
+  height: 100%;
+}
+
+.mobile {
+  height: 100%;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+
+  .top-panel {
+    flex: 0 0 4rem;
+    border-bottom: 1px solid black;
+    display: flex;
+    background-color: #f8f8f8;
+
+    button.back {
+      all: unset; // reset the button styling
+      transition: all 0.2s;
+      padding-left: 20px;
+      padding-right: 20px;
+      padding-top: auto;
+      padding-bottom: auto;
+      opacity: 0.6;
+      -webkit-tap-highlight-color: transparent;
+
+      user-select: none; // disable text selection
+      -webkit-user-select: none;
+      -moz-user-select: none;
+
+      .icon {
+        font-size: large;
+        transition: none;
+      }
+
+      .text {
+        padding-left: 2px;
+        font-size: small;
+        font-weight: 700;
+      }
+
+      &:active {
+        transform: scaleX(1.2) scaleY(1.2);
+        transform-origin: left;
+      }
+    }
+
+    div.menu {
+      margin-left: auto;
+      margin-right: 10px;
+      margin-top: auto;
+      margin-bottom: auto;
+      -webkit-tap-highlight-color: transparent;
+
+      h1.title {
+        opacity: 0.75;
+        height: 100%;
+        color: black;
+        font-size: 1.8rem;
+        margin-top: auto;
+        margin-bottom: auto;
+        user-select: none; // disable text selection
+        -webkit-user-select: none;
+        -moz-user-select: none;
+
+        .icon {
+          position: relative;
+          text-align: start;
+          margin-left: 10px;
+          margin-right: 5px;
+          margin-top: auto;
+          margin-bottom: auto;
+          opacity: 0.5;
+        }
+      }
+
+      div.dropdown {
+        width: fit-content;
+        background-color: #f8f8f8;
+        position: absolute;
+        border: 1px black solid;
+        right: 2px;
+        visibility: hidden;
+        user-select: none; // disable text selection
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        z-index: 1;
+
+        li {
+          list-style: none;
+
+          &:active {
+            background-color: lightgray;
+          }
+        }
+
+        &.active {
+          visibility: visible;
+        }
+      }
+    }
+  }
+
+  .page-container {
+    flex: 10;
+
+    height: 100%;
+  }
+}
+
+.desktop {
+  height: 100%;
+  display: flex;
+
+  .side-panel {
+    flex: 0.5 1.5 220px;
+    background-color: #f8f8f8;
+    display: flex;
+    flex-direction: column;
+
+    button.back {
+      all: unset; // reset the button styling
+      transition: all 0.5s;
+      height: 50px;
+      width: 80%;
+      text-align: left;
+      margin-bottom: 10px;
+      margin-top: 30px;
+
+      .icon {
+        padding-left: 30px;
+        font-size: large;
+        transition: none;
+      }
+
+      .text {
+        margin-left: 3px;
+        font-size: small;
+        font-weight: 700;
+      }
+
+      &:hover {
+        cursor: pointer;
+        transform: scaleX(1.2) scaleY(1.2);
+        transform-origin: 30%;
+      }
+
+      &:active {
+        transform: scale(1.3);
+        transform-origin: left;
+        transition: transform 0.1;
+      }
+    }
+
+    .menu {
+      li {
+        padding-left: 30px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        margin: 5px 0px;
+        list-style-type: none;
+        font-size: large;
+
+        user-select: none; // disable text selection
+        -webkit-user-select: none;
+        -moz-user-select: none;
+
+        transition: all 300ms ease;
+
+        &:hover {
+          cursor: pointer;
+
+          transform: translateX(15px);
+          transform-origin: left;
+          transition-duration: 400ms;
+          transition-timing-function: ease;
+        }
+
+        &:active {
+          transform: scaleY(1.4) translateX(15px);
+          transform-origin: left;
+          transition-duration: 0ms;
+        }
+      }
+
+      li:not(.highlighted) {
+        opacity: 0.3; // Only apply to non-highlighted items
+      }
+
+      li.highlighted {
+        opacity: 1; // Ensure highlighted items are fully visible
+      }
+    }
+
+    button.sign-out {
+      all: unset;
+      margin-top: auto;
+      width: fit-content;
+      font-style: italic;
+      font-size: medium;
+      transition: all 0.5s;
+
+      margin-left: 20px;
+      margin-bottom: 20px;
+
+      &:hover {
+        transform: scale(1.4);
+        transform-origin: left;
+        font-weight: bold;
+
+        cursor: pointer;
+      }
+    }
+  }
+
+  .page-container {
+    flex: 10;
+  }
+}

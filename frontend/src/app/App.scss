@@ -1,0 +1,26 @@
+@import url('../styles/fonts.scss');
+
+/* The main positioning and sizing of the app. */
+
+.app {
+  /* Take up the entire screen */
+  height: 100%;
+  width: 100%;
+
+  .dashboard,
+  .home {
+    /* dashboard and home serve as the two main pages */
+    position: absolute;
+    height: 100%;
+    width: 100%;
+  }
+
+  .dashboard {
+    /* starts hidden on the left hand side, animates in from left when ~active~ */
+    left: -100%;
+    transition: transform 1s ease-in-out;
+    &.active {
+      transform: translateX(100%);
+    }
+  }
+}

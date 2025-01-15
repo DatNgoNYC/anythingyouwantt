@@ -1,0 +1,94 @@
+.you {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 50px;
+
+  img {
+    align-self: center;
+
+    height: 250px;
+    width: 250px;
+    object-fit: cover; /* Ensures the image fills the container while maintaining aspect ratio */
+    border-radius: 50%;
+    margin-top: 20px;
+  }
+
+  p:first-of-type {
+    margin-top: 60px;
+  }
+
+  p {
+    align-self: center;
+    margin-top: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    word-wrap: break-word; /* Ensure the email address wraps neatly */
+    text-align: center;
+  }
+
+  p b {
+    padding-right: 10px;
+  }
+
+  button {
+    color: black;
+    background-color: white;
+    font-weight: 500;
+    font-style: italic;
+    border: 2px solid black;
+    border-radius: 25px;
+    width: fit-content;
+    padding: 3px 10px 3px 10px;
+
+    margin-top: auto;
+    align-self: flex-end;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0px 20px;
+    padding-bottom: 30px;
+
+    p b {
+      display: block;
+    }
+    
+    p {
+      text-align: center;   /* optional, center text if desired */
+      word-wrap: break-word;
+      margin: 8px 0;        /* spacing between paragraphs */
+    }
+
+    img {
+      margin-top: 17%;
+    }
+
+    div.button-container {
+      display: flex;
+      justify-content: space-between; /* Push buttons to opposite sides */
+      align-items: center;
+      margin-top: auto;
+
+      button {
+        box-shadow: rgb(38, 57, 77) 0px 13px 25px -10px;
+        transition: all 400ms;
+        user-select: none; // disable text selection
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -webkit-tap-highlight-color: transparent;
+
+        &:active {
+          transform: scale(0.9); /* Slight shrink effect */
+          box-shadow: rgb(38, 57, 77) 0px 5px 15px -10px; /* Reduced shadow for "pressed" look */
+        }
+      }
+
+      button.delete-account {
+        background-color: black;
+        color: white;
+        font-weight: 600;
+      }
+    }
+  }
+}
