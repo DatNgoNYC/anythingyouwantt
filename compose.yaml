@@ -1,0 +1,78 @@
+services:
+  gateway:
+    image: nginx:stable-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - frontend-dist:/usr/share/nginx/html:ro # Mount the static assets
+      - /etc/letsencrypt/live/anythingyouwantt.com/ # Mount the ssl certificate
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro # Mount custom config
+    restart: unless-stopped
+    depends_on:
+      - rest-api
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - frontend-dist:/app/dist # ✅ Mount volume somewhere safe
+    command: [ "sh", "-c", "cp -r /dist/* /app/dist" ] # ✅ Copy build to the volume
+
+  rest-api:
+    build:
+      context: ./rest-api
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_URL: postgresql://user:password@database:5432/db
+      REDIS_URL: redis://job-queue:6379
+      GOOGLE_OAUTH2_CLIENT_ID: ${GOOGLE_OAUTH2_CLIENT_ID}
+    depends_on:
+      database:
+        condition: service_healthy
+      job-queue:
+        condition: service_started
+    restart: unless-stopped
+
+  mail-service:
+    build:
+      context: ./mail-service
+      dockerfile: Dockerfile
+    environment:
+      REDIS_URL: redis://job-queue:6379
+      GOOGLE_OAUTH2_CLIENT_ID: ${GOOGLE_OAUTH2_CLIENT_ID}
+      GOOGLE_OAUTH2_CLIENT_SECRET: ${GOOGLE_OAUTH2_CLIENT_SECRET}
+      GOOGLE_OAUTH2_REFRESH_TOKEN: ${GOOGLE_OAUTH2_REFRESH_TOKEN}
+      EMAIL_USER: ${EMAIL_USER}
+    depends_on:
+      - job-queue
+    restart: unless-stopped
+
+  job-queue:
+    image: redis:alpine
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+
+  database:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: db
+    volumes:
+      - database-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U user -d db" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  frontend-dist: # for frontend build artifacts...   nginx  <-->  VOLUME frontend-dist  <-->  frontend
+  redis-data: # for redis jobs
+  database-data: # for postgressql stateful data
