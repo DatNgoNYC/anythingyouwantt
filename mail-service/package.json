@@ -1,0 +1,35 @@
+{
+  "name": "mail-service",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "format:check": "prettier --check .",
+    "format": "prettier --write .",
+    "lint": "eslint --max-warnings=0",
+    "test": " ",
+    "build": "rm -rf dist && tsc -p ./tsconfig-build.json",
+    "dev": "npm run build && node --no-warnings --env-file=.env dist/index.js",
+    "start": "node --no-warnings dist/index.js",
+    "clean": "rm -rf dist",
+    "clean:hard": "rm -rf dist && rm -rf node_modules"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.4.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.2"
+  },
+  "dependencies": {
+    "@types/nodemailer": "^6.4.17",
+    "bullmq": "^5.34.5",
+    "googleapis": "^144.0.0",
+    "nodemailer": "^6.9.16"
+  }
+}
