@@ -12,21 +12,21 @@
 
 ## Introduction
 
-Welcome to the *official docs* for ***anythingyouwantt***. 
+Welcome to the *official docs* for ***anythingyouwantt***.
 
 ### Application Architecture
 
-![application-architecture](Application-Architecture.excalidraw.png)
+![application-architecture](./_docs/Application-Architecture.excalidraw.png)
 
-- The web application accepts clients' requests from the `/frontend` and sends it to the `/rest-api`. 
+- The web application sends clients' requests from the `/frontend` to the `/rest-api`.
 
-- From there the `/rest-api` can interact with the `postgres` database to perform various stateful CRUD operations.
+- From there the `/rest-api` interacts with the `postgres` database to perform various stateful CRUD operations.
 
-- The `/rest-api` will send a job to the `redis` job queue (upon a request for an order) for the `/mail-service` to carry out the order and then send a job back to `redis` to alert the `/rest-api` to update that order.
+- The `/rest-api` will send a job to the `redis` job queue (upon a request for an order) for the `/mail-service` to carry out the order and then send a job back to `redis` to alert the `/rest-api` to update the order status.
 
 ### System Architecture
 
-The system architecture includes the all the services needed during deployment.
+The system architecture includes the all the systems and services needed during deployment.
 
 [show graph illustrating architecture]
 
